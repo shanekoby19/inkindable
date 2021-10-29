@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build:dev": "npx webpack --env mode=development",
-    "build:prod": "npx webpack --env mode=production",
+    "start": "npx webpack --env mode=production",
     "dev-server": "npx webpack serve --open --env mode=development"
   },
   "dependencies": {
