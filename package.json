@@ -1,0 +1,51 @@
+{
+  "name": "Inkindable",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build:dev": "npx webpack --env mode=development",
+    "build:prod": "npx webpack --env mode=production",
+    "dev-server": "npx webpack serve --open --env mode=development"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/preset-react": "^7.14.5",
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/icons-material": "^5.0.5",
+    "@mui/lab": "^5.0.0-alpha.53",
+    "@mui/material": "^5.0.6",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "bootstrap": "5.1.1",
+    "css-loader": "^6.2.0",
+    "date-fns": "^2.23.0",
+    "firebase": "^9.1.2",
+    "firebaseui": "^5.0.0",
+    "moment": "^2.29.1",
+    "normalize.css": "^8.0.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.0.0-rc.1",
+    "react-date-range": "^1.4.0",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
+    "react-responsive-carousel": "^3.2.21",
+    "react-router-dom": "^5.3.0",
+    "redux": "^4.1.1",
+    "redux-thunk": "^2.3.0",
+    "sass": "^1.39.2",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.2.1",
+    "uuid": "^8.3.2",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.2.0"
+  },
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.9"
+  }
+}
