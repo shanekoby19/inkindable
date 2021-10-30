@@ -36,6 +36,7 @@ const SignUpForm = (props) => {
                     fName: fNameRef.current.value,
                     lName: lNameRef.current.value,
                     dob: dob.valueOf(),
+                    children: [],
                 });
                 props.history.push('/');
             })

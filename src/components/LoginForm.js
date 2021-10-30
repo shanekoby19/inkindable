@@ -60,8 +60,8 @@ const LoginForm = (props) => {
                         { error && <Alert variant='danger'>{error}</Alert> }
                     </Row>
                     <Row  className="d-flex justify-content-center">
-                        <Button className='mt-3 p-2' size='lg' variant='secondary'><Link to='/signup' style={{textDecoration: "none", color: "white"}}>Sign Up</Link></Button>
                         <Button className='mt-3 p-2' size='lg' variant='primary' onClick={login}>Login</Button>
+                        <Button className='mt-3 p-2' size='lg' variant='secondary' onClick={() => props.history.push(`/signup`)}>Sign Up</Button>
                     </Row>
                 </Row>
             </Card>        

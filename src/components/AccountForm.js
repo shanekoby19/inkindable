@@ -13,16 +13,17 @@ const AccountForm = (props) => {
     const [passwordSuccess, setPasswordSuccess] = useState(``);
     const [emailSuccess, setEmailSuccess] = useState(``);
     const [accountSuccess, setAccountSuccess] = useState(``);
+    const [reauthenticateError, setReauthenticateError] = useState(``);
     const [dob, setDOB] = useState(moment(props.currentParent.dob));
     const [showAlert, setShowAlert] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const { deleteUserAccount, currentUser, updateUserEmail, updateUserPassword } = useContext(AuthContext);
+    const { deleteUserAccount, currentUser, updateUserEmail, updateUserPassword, reauthenticate } = useContext(AuthContext);
     const emailRef = useRef(null);
     const fNameRef = useRef(null);
     const lNameRef = useRef(null);
     const passwordRef = useRef(``);
     const confirmPasswordRef = useRef(``);
-    const authPassword = useRef(``);
+    const authPasswordRef = useRef(``);
 
     const deleteParent = () => {
         setError(``);
@@ -42,7 +43,7 @@ const AccountForm = (props) => {
             return setError(`Your passwords do not match. Please re-enter them and try again.`)
         }
         if(emailRef.current.value !== props.currentParent.email) {
-            await updateUserEmail(emailRef.current.value, authPassword.current.value)
+            await updateUserEmail(emailRef.current.value, authPasswordRef.current.value)
             .then(() => {
                 currentUser.getIdToken(currentUser, true);
                 props.startUpdateParent(props.currentParent.refId, emailRef.current.value);
@@ -64,7 +65,7 @@ const AccountForm = (props) => {
             })
         }
         if(passwordRef.current.value === confirmPasswordRef.current.value && passwordRef.current.value !== ``) {
-            updateUserPassword(passwordRef.current.value, authPassword.current.value)
+            updateUserPassword(passwordRef.current.value, authPasswordRef.current.value)
             .then(() => {
                 currentUser.getIdToken(currentUser, true);
                 setPasswordSuccess(`Password updated successfully`);
@@ -92,6 +93,25 @@ const AccountForm = (props) => {
         }
     }
 
+    const reauthenticateAndUpdate = () => {
+        setReauthenticateError(``);
+        reauthenticate(authPasswordRef.current.value)
+        .then(() => {
+            updateParent();
+            setShowModal(false);
+        })
+        .catch(e => {
+            switch(e.code) {
+                case 'auth/user-mismatch':
+                    return setReauthenticateError(`Invalid password, please try again.`)
+                case 'auth/wrong-password':
+                    return setReauthenticateError(`Invalid password, please try again.`)
+                default:
+                    setReauthenticateError(e.code);
+            }
+        })
+    }
+
     return (
         <div>
             <Nav {...props}></Nav>
@@ -100,15 +120,20 @@ const AccountForm = (props) => {
                     <Card.Title className='text-center mb-5 display-4'>Account Details</Card.Title>
                     <Modal show={showModal} onHide={() => setShowModal(false)}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Reauthenticate</Modal.Title>
+                            <Modal.Title>Reauthentication required</Modal.Title>
                         </Modal.Header>
-                        <Modal.Body>
-                            <input id='last-name' type='text' name='last-name' ref={authPassword}></input>
-                            <label htmlFor='password'>Password</label>
+                        <Modal.Body className='d-flex flex-column'>
+                            <label className='mb-3 h4' htmlFor='password'>Password</label>
+                            <input className='p-2' id='last-name' type='password' name='password' ref={authPasswordRef}></input>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
-                            <Button variant="primary" onClick={() => { setShowModal(false); updateParent() }}>Update</Button>
+                            <Container fluid className='p-0'>
+                                { reauthenticateError && <Alert variant='danger'>{ reauthenticateError }</Alert>}
+                            </Container>
+                            <Container className='d-flex justify-content-end p-0'>
+                                <Button style={{marginRight: '1rem'}} variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
+                                <Button variant="primary" onClick={reauthenticateAndUpdate}>Update</Button>
+                            </Container>
                         </Modal.Footer>
                     </Modal>
                     <Row className='mb-3'>
@@ -155,7 +180,7 @@ const AccountForm = (props) => {
                         >
                             <Alert.Heading>Are you sure you want to delete your account?</Alert.Heading>
                             <p>
-                                Doing so, will result in the removal of all data from your profile.
+                                Doing so will remove all your personal data from the database. This cannot be undone.
                             </p>
                             <Button variant='danger' onClick={deleteParent}>Confirm Delete</Button>
                         </Alert>

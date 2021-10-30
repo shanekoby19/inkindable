@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, deleteUser, updatePassword, updateEmail, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { app } from '../firebase/firebase';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 export const AuthContext = createContext();
 
@@ -19,18 +20,21 @@ export const AuthProvider = (props) => {
 
     const deleteUserAccount = () => deleteUser(currentUser);
 
-    const updateUserEmail = (email, password='') => {
+    const reauthenticate = (password) => {
+        const credential = EmailAuthProvider.credential(currentUser.email, password);
+        return reauthenticateWithCredential(currentUser, credential);
+    }
+
+    const updateUserEmail = (email, password) => {
         if(password) {
-            const credential = EmailAuthProvider.credential(email, password);
-            reauthenticateWithCredential(currentUser, credential);
+            reauthenticate(password);
         }
         return updateEmail(currentUser, email);
     }
 
-    const updateUserPassword = (newPassword, oldPassword=``) => {  
+    const updateUserPassword = (newPassword, oldPassword) => {  
         if(oldPassword) { 
-            const credential = EmailAuthProvider.credential(currentUser.email, password);
-            reauthenticateWithCredential(currentUser, credential);
+            reauthenticate(oldPassword);
         }
         return updatePassword(currentUser, newPassword);
     }
@@ -47,6 +51,7 @@ export const AuthProvider = (props) => {
             signIn,
             signOutUser,
             deleteUserAccount,
+            reauthenticate,
             updateUserEmail,
             updateUserPassword,
         }}>
