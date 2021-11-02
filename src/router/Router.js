@@ -4,7 +4,7 @@ import LoginForm from '../components/LoginForm';
 import SignUpForm from '../components/SignUpForm';
 import Dashboard from '../components/Dashboard';
 import Logs from '../components/Logs';
-import AccountForm from '../components/AccountForm';
+import AccountPage from '../components/AccountPage';
 import { connect } from 'react-redux';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -15,7 +15,7 @@ const Router = () => {
                 <Route path='/login' component={LoginForm} />
                 <Route path='/signup' component={SignUpForm} />
                 <ProtectedRoute exact path='/' component={Dashboard} ></ProtectedRoute>
-                <ProtectedRoute path='/account' component={AccountForm}></ProtectedRoute>
+                <ProtectedRoute path='/account' component={AccountPage}></ProtectedRoute>
                 <ProtectedRoute path='/logs' component={Logs}></ProtectedRoute>
             </Switch>
         </BrowserRouter>

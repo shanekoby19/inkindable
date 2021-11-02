@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, deleteUser, updatePassword, updateEmail, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { app } from '../firebase/firebase';
-import { ConstructionOutlined } from '@mui/icons-material';
 
 export const AuthContext = createContext();
 

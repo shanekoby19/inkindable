@@ -1,5 +1,4 @@
 import React, { useState, useContext, useRef } from 'react';
-import Nav from './Nav';
 import moment from 'moment';
 import { Button, Alert, Modal, Container, Row, Col, Card } from 'react-bootstrap';
 import { AuthContext } from '../context/AuthContext';
@@ -114,95 +113,96 @@ const AccountForm = (props) => {
 
     return (
         <div>
-            <Nav {...props}></Nav>
-            <Container style={{width: "40%"}}>
-                <Card className='p-5'>
-                    <Card.Title className='text-center mb-5 display-4'>Account Details</Card.Title>
-                    <Modal show={showModal} onHide={() => setShowModal(false)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Reauthentication required</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body className='d-flex flex-column'>
-                            <label className='mb-3 h4' htmlFor='password'>Password</label>
-                            <input className='p-2' id='last-name' type='password' name='password' ref={authPasswordRef}></input>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Container fluid className='p-0'>
-                                { reauthenticateError && <Alert variant='danger'>{ reauthenticateError }</Alert>}
-                            </Container>
-                            <Container className='d-flex justify-content-end p-0'>
-                                <Button style={{marginRight: '1rem'}} variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
-                                <Button variant="primary" onClick={reauthenticateAndUpdate}>Update</Button>
-                            </Container>
-                        </Modal.Footer>
-                    </Modal>
-                    <Row className='mb-3'>
-                        <Col className='d-flex flex-column'>
-                            <label className='mb-3' htmlFor='input'>First Name</label>
-                            <input className='p-2 mb-5' id='first-name' type='text' name='first-name' ref={fNameRef} defaultValue={props.currentParent.fName}></input>
-                        </Col>
-                        <Col className='d-flex flex-column'>
-                            <label className='mb-3' htmlFor='input'>Last Name</label>
-                            <input className='p-2 mb-5' id='last-name' type='text' name='last-name' ref={lNameRef} defaultValue={props.currentParent.lName}></input>
-                        </Col>
-                    </Row>
-                    <Row className='mb-3'>
-                        <Col className='d-flex flex-column'>
-                            <label className='mb-3' htmlFor='input'>Email</label>
-                            <input className='p-2 mb-5' id='email' type='email' name='email' ref={emailRef} defaultValue={props.currentParent.email}></input>
-                        </Col>
-                        <Col className='d-flex flex-column'> 
-                            <label className='mb-3' className= 'mb-3' htmlFor='input'>Date of Birth</label>
-                            <DatePicker
-                                value={dob}
-                                onChange={(newValue) => setDOB(moment(newValue))}
-                                renderInput={(params) => <TextField {...params}/>}
-                                className='mb-3'
-                            />
-                        </Col>
-                    </Row>
-                    <Row className='mb-3'>
-                        <Col className='d-flex flex-column'>
-                            <label className='mb-3' htmlFor='password'>Password</label>
-                            <input className='p-2 mb-5' id='password' type='password' name='password' ref={passwordRef}></input>
-                        </Col>
-                        <Col className='d-flex flex-column'>
-                            <label className='mb-3' htmlFor='password'>Confirm Password</label>
-                            <input className='p-2 mb-5' id='con-password' type='password' name='con-password' ref={confirmPasswordRef}></input>
-                        </Col>
-                    </Row>
-                    <Row className='mb-3'>
-                        {showAlert && 
-                        <Alert 
-                            variant='danger'
-                            onClose={() => setShowAlert(false)}
-                            dismissible
-                        >
-                            <Alert.Heading>Are you sure you want to delete your account?</Alert.Heading>
-                            <p>
-                                Doing so will remove all your personal data from the database. This cannot be undone.
-                            </p>
-                            <Button variant='danger' onClick={deleteParent}>Confirm Delete</Button>
-                        </Alert>
-                        }
-                    </Row>
-                    <Row className='mb-3 d-flex flex-column'>
-                        { error && <Alert variant='danger'>{ error }</Alert> }
-                        { passwordSuccess && <Alert variant='success'>{ passwordSuccess }</Alert> }
-                        { emailSuccess && <Alert variant='success'>{ emailSuccess }</Alert> }
-                        { accountSuccess && <Alert variant='success'>{ accountSuccess }</Alert> }
-                        <Button
-                            variant='success'
-                            onClick={updateParent}
-                            className='p-3 mb-3'
-                        >Save Changes</Button> 
-                        <Button 
-                            variant='danger' 
-                            onClick={() => setShowAlert(true)}
-                            className='p-3'>
-                        Delete Account</Button>
-                    </Row>
-                </Card>
+            <Container>
+                <Row className='border-bottom border-3 mb-5'>
+                    <h2 className='text-center display-4'>Account Details</h2>
+                    <Col className='col-sm-4 col-lg-6'>
+                        <Modal show={showModal} onHide={() => setShowModal(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Reauthentication required</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body className='d-flex flex-column'>
+                                <label className='mb-3 h4' htmlFor='password'>Password</label>
+                                <input className='p-2' id='last-name' type='password' name='password' ref={authPasswordRef}></input>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Container fluid className='p-0'>
+                                    { reauthenticateError && <Alert variant='danger'>{ reauthenticateError }</Alert>}
+                                </Container>
+                                <Container className='d-flex justify-content-end p-0'>
+                                    <Button style={{marginRight: '1rem'}} variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
+                                    <Button variant="primary" onClick={reauthenticateAndUpdate}>Update</Button>
+                                </Container>
+                            </Modal.Footer>
+                        </Modal>
+                    </Col>
+                </Row>
+                <Row className='mb-3'>
+                    <Col className='d-flex flex-column'>
+                        <label className='mb-3' htmlFor='input'>First Name</label>
+                        <input className='p-2 mb-5' id='first-name' type='text' name='first-name' ref={fNameRef} defaultValue={props.currentParent.fName}></input>
+                    </Col>
+                    <Col className='d-flex flex-column'>
+                        <label className='mb-3' htmlFor='input'>Last Name</label>
+                        <input className='p-2 mb-5' id='last-name' type='text' name='last-name' ref={lNameRef} defaultValue={props.currentParent.lName}></input>
+                    </Col>
+                </Row>
+                <Row className='mb-3'>
+                    <Col className='d-flex flex-column'>
+                        <label className='mb-3' htmlFor='input'>Email</label>
+                        <input className='p-2 mb-5' id='email' type='email' name='email' ref={emailRef} defaultValue={props.currentParent.email}></input>
+                    </Col>
+                    <Col className='d-flex flex-column'> 
+                        <label className='mb-3' className= 'mb-3' htmlFor='input'>Date of Birth</label>
+                        <DatePicker
+                            value={dob}
+                            onChange={(newValue) => setDOB(moment(newValue))}
+                            renderInput={(params) => <TextField {...params}/>}
+                            sx={ {padding: 2} }
+                        />
+                    </Col>
+                </Row>
+                <Row className='mb-3'>
+                    <Col className='d-flex flex-column'>
+                        <label className='mb-3' htmlFor='password'>Password</label>
+                        <input className='p-2 mb-5' id='password' type='password' name='password' ref={passwordRef}></input>
+                    </Col>
+                    <Col className='d-flex flex-column'>
+                        <label className='mb-3' htmlFor='password'>Confirm Password</label>
+                        <input className='p-2 mb-5' id='con-password' type='password' name='con-password' ref={confirmPasswordRef}></input>
+                    </Col>
+                </Row>
+                <Row className='mb-3'>
+                    {showAlert && 
+                    <Alert 
+                        variant='danger'
+                        onClose={() => setShowAlert(false)}
+                        dismissible
+                    >
+                        <Alert.Heading>Are you sure you want to delete your account?</Alert.Heading>
+                        <p>
+                            Doing so will remove all your personal data from the database. This cannot be undone.
+                        </p>
+                        <Button variant='danger' onClick={deleteParent}>Confirm Delete</Button>
+                    </Alert>
+                    }
+                </Row>
+                <Row className='mb-3 d-flex flex-column'>
+                    { error && <Alert variant='danger'>{ error }</Alert> }
+                    { passwordSuccess && <Alert variant='success'>{ passwordSuccess }</Alert> }
+                    { emailSuccess && <Alert variant='success'>{ emailSuccess }</Alert> }
+                    { accountSuccess && <Alert variant='success'>{ accountSuccess }</Alert> }
+                    <Button
+                        variant='success'
+                        onClick={updateParent}
+                        className='p-3 mb-3'
+                    >Save Changes</Button> 
+                    <Button 
+                        variant='danger' 
+                        onClick={() => setShowAlert(true)}
+                        className='p-3'>
+                    Delete Account</Button>
+                </Row>
             </Container>
         </div>
     )
