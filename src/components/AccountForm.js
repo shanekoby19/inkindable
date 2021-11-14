@@ -137,7 +137,7 @@ const AccountForm = (props) => {
                         </Modal>
                     </Col>
                 </Row>
-                <Row className='mb-3'>
+                <Row>
                     <Col className='d-flex flex-column'>
                         <label className='mb-3' htmlFor='input'>First Name</label>
                         <input className='p-2 mb-5' id='first-name' type='text' name='first-name' ref={fNameRef} defaultValue={props.currentParent.fName}></input>
@@ -147,7 +147,7 @@ const AccountForm = (props) => {
                         <input className='p-2 mb-5' id='last-name' type='text' name='last-name' ref={lNameRef} defaultValue={props.currentParent.lName}></input>
                     </Col>
                 </Row>
-                <Row className='mb-3'>
+                <Row>
                     <Col className='d-flex flex-column'>
                         <label className='mb-3' htmlFor='input'>Email</label>
                         <input className='p-2 mb-5' id='email' type='email' name='email' ref={emailRef} defaultValue={props.currentParent.email}></input>
@@ -172,7 +172,7 @@ const AccountForm = (props) => {
                         <input className='p-2 mb-5' id='con-password' type='password' name='con-password' ref={confirmPasswordRef}></input>
                     </Col>
                 </Row>
-                <Row className='mb-3'>
+                <Row>
                     {showAlert && 
                     <Alert 
                         variant='danger'
@@ -187,7 +187,7 @@ const AccountForm = (props) => {
                     </Alert>
                     }
                 </Row>
-                <Row className='mb-3 d-flex flex-column'>
+                <Row className='d-flex flex-column'>
                     { error && <Alert variant='danger'>{ error }</Alert> }
                     { passwordSuccess && <Alert variant='success'>{ passwordSuccess }</Alert> }
                     { emailSuccess && <Alert variant='success'>{ emailSuccess }</Alert> }

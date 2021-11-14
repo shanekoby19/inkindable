@@ -13,7 +13,7 @@ const LoginForm = (props) => {
     const passwordRef = useRef(``);
 
 
-    const login = () => {
+    const login = async () => {
         setError(``);
         if(emailRef.current.value === ``) {
             return setError(`Please enter your email address`);
@@ -21,23 +21,23 @@ const LoginForm = (props) => {
         if(passwordRef.current.value === ``) {
             return setError(`Please enter your password.`);
         }
-        signIn(emailRef.current.value, passwordRef.current.value)
-        .then((userCredential) => {
+        try {
+            const userCredential = await signIn(emailRef.current.value, passwordRef.current.value)
             Object.entries(props.currentParent).length === 0 ? props.startLoadParent(userCredential.user.uid) : null;
             props.history.push('/');
-        })
-        .catch(error => {
+        }
+        catch(error) {
             switch (error.code) {
                 case 'auth/user-not-found': 
                     return setError(`Invalid username or email please try again.`)
                 default:
                     return setError(error.code)
             }
-        });
-    }
+        };
+    } 
     
     if(currentUser) {
-        Object.entries(props.currentParent).length === 0? props.startLoadParent(currentUser.uid) : null;
+        Object.entries(props.currentParent).length === 0 ? props.startLoadParent(currentUser.uid) : null;
         return <Redirect to='/' />
     }
 

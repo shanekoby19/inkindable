@@ -1,0 +1,120 @@
+import React, { useState, useRef } from 'react';
+import { Button, Row, Container, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import moment from 'moment';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+
+import db from '../firebase/firebase';
+
+const LogListItem = (props) => {
+    const [reload, setReload] = useState(false);
+    const titleRef = useRef(props.logDay.title || ``);
+    const minutesRef = useRef(props.logDay.minutes || 0);
+
+    const toggleButtonState = () => {
+        props.logDay.isShowing = !props.logDay.isShowing;
+        setReload(!reload);
+    }
+
+    const handleEditLogDay = async (selectedLogDay) => {
+        if(props.logDay.isShowing) {
+            // Save data to the database.
+            const logDayDocRef = await doc(db, `parents/${props.currentParent.refId}/children/${props.parentLog.childRefId}/logs/${props.parentLog.logRefId}`);
+            const logDayDoc = await getDoc(logDayDocRef);
+            const newLogDays = logDayDoc.data().logDays.filter(logDay => logDay.date !== selectedLogDay.date);
+
+            await updateDoc(logDayDocRef, {
+                totalTime: newLogDays.reduce((prevValue, currentLog) => prevValue + currentLog.minutes, Number.parseInt(minutesRef.current.value)),
+                logDays: [...newLogDays, {
+                    ...selectedLogDay,
+                    status: 'Saved',
+                    isShowing: null,
+                    title: titleRef.current.value,
+                    minutes: Number.parseInt(minutesRef.current.value),
+                    lastEditAt: moment().valueOf(),
+                }]
+            });
+
+            props.history.push('/');
+            return props.history.push('/logs');
+        }
+
+        toggleButtonState();
+    }
+
+    const determineActivityTitle = (type) => {
+        switch(type) {
+            case 'Reading At Home':
+                return `Book Title`;
+            case 'Volunteer Hours':
+                return `What did you do?`;
+            case 'Peer Cards':
+                return `Activity Title`;
+        }
+    }
+
+    const determineActivityTimeTitle = (type) => {
+        switch(type) {
+            case 'Reading At Home':
+                return `Time spent reading (minutes)`;
+            case 'Volunteer Hours':
+                return `Time spent volunteering (minutes)`;
+            case 'Peer Cards':
+                return `Time spent on activity (minutes)`;
+        }
+    }
+
+    return (
+
+        <Container>
+            <Row className='d-flex mb-3'>
+                <Col className='col-lg-3 d-flex justify-content-start'>
+                    <h3>{props.logDay.type}</h3>
+                </Col>
+                <Col className='col-lg-3 d-flex justify-content-evenly'>
+                    <h3>{moment(props.logDay.date).format('MMM. Do, YYYY')}</h3>
+                </Col>
+                <Col className='col-lg-3 d-flex justify-content-evenly'>
+                    <h3>{props.logDay.status}</h3>
+                </Col>
+                <Col className='col-lg-3 d-flex justify-content-end'>
+                    <Row>
+                        <Col className='d-flex justify-content-start'>
+                            { props.logDay.isShowing && <Button variant='danger' onClick={toggleButtonState}>Cancel</Button>}
+                        </Col>
+                        <Col className='d-flex justify-content-end'>
+                            <Button variant={props.logDay.isShowing ? 'success' : 'info'} onClick={() => handleEditLogDay(props.logDay)}>{ props.logDay.isShowing ? `Save`: `Edit` }</Button>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+
+            {
+                props.logDay.isShowing &&
+                <div>
+                    <Row className='d-flex'>
+                        <Col className='col-lg-9 d-flex flex-column justify-content-start my-3'>
+                            <label className='my-3'>{determineActivityTitle(props.logDay.type)}</label>
+                            <input className='text-center p-3 display-6' ref={titleRef} defaultValue={props.logDay.title}></input>
+                        </Col>
+                        <Col className='col-lg-3 d-flex flex-column justify-content-start mt-3'>
+                            <label className='my-3'>{determineActivityTimeTitle(props.logDay.type)}</label>
+                            <input className='text-center p-3 display-6'  ref={minutesRef} defaultValue={props.logDay.minutes}></input>
+                        </Col>
+                    </Row>
+                    <Row className='mb-3'>
+                        <Col className='d-flex justify-content-end col-12'>
+                            <p className='text-success'>Last Updated On: {moment(props.logDay.lastEditAt).format('MMMM Do')} at  {moment(props.logDay.lastEditAt).format('h:mmA')}</p>
+                        </Col>
+                    </Row>
+                </div>
+            }
+        </Container>
+    )
+}
+
+const mapStateToProps = (state) => ({
+    currentParent: state.parent.currentParent
+})
+
+export default connect(mapStateToProps)(LogListItem);
