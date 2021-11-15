@@ -60,9 +60,11 @@ const AddLogForm = (props) => {
 
         await addDoc(logsCollection, {
             createdAt: moment().valueOf(),
-            submitted: false,
+            status: 'pending',
             logDays: dataLoad,
             totalTime: 0,
+            type: selectedLogType,
+            childName: `${currentChild.fName} ${currentChild.lName}`,
         });
 
         props.setShowAddLogForm(false);

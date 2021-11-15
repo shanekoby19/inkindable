@@ -2,3 +2,5 @@ node_modules
 public/bundle.js
 public/bundle.js.LICENSE.txt
 public/bundle.js.map
+package.json
+yarn.lock

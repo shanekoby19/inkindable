@@ -4,12 +4,16 @@ import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import { getDocs, query, collection } from 'firebase/firestore';
 
 import db from '../firebase/firebase';
+import LogFilters from './LogFilters';
 import LogListHeader from './LogListHeader';
 
 const LogList = (props) => {
     const [childData, setChildData] = useState([]);
     const [logData, setLogData] = useState([]);
+    const [displayLogData, setDisplayLogData] = useState([]);
+    const [displayChildData, setDisplayChildData] = useState([]);
     const [selectedChild, setSelectedChild] = useState(``);
+    const [reload, setReload] = useState(``);
 
     useEffect(async () => {
         const tempChildData = [{fName: ``, lName: ``}];
@@ -22,17 +26,20 @@ const LogList = (props) => {
         }));
 
         setChildData(tempChildData);
+        setDisplayChildData(tempChildData);
 
+        const tempLogs = [];
         tempChildData.forEach(async (child) => {
-            const tempLogs = [];
             const logs = await getDocs(collection(db, `parents/${props.currentParent.refId}/children/${child.refId}/logs`));
             logs.forEach(log => tempLogs.push({
                 ...log.data(),
                 childRefId: child.refId,
                 logRefId: log.id,
             }));
-            setLogData(tempLogs);
         });
+        setLogData(tempLogs);
+        setDisplayLogData(tempLogs);
+
     }, []);
 
     const handleAddLog = () => {
@@ -45,7 +52,19 @@ const LogList = (props) => {
                 <Row className='border-bottom border-3 mb-5'>
                     <h2 className='text-center display-4'>Logs</h2>
                 </Row>
-                <LogListHeader {...props} logData={logData}></LogListHeader>
+                <LogFilters 
+                    {...props} 
+                    reload={reload} 
+                    setReload={setReload} 
+                    childData={childData}
+                    setDisplayChildData={setDisplayChildData} 
+                    logData={logData}
+                    setDisplayLogData={setDisplayLogData}>
+                </LogFilters>
+                <LogListHeader 
+                    {...props} 
+                    logData={displayLogData}>
+                </LogListHeader>
                 <Row>
                     <Col>
                         <ButtonGroup className='d-flex'>

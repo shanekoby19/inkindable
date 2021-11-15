@@ -32,7 +32,7 @@ const LogListHeader = (props) => {
         const logDayDoc = await getDoc(logDayDocRef);
         await updateDoc(logDayDocRef, {
             ...logDayDoc.data(),
-            submitted: true,
+            status: 'submitted',
         })
 
         props.history.push('/');
@@ -61,14 +61,19 @@ const LogListHeader = (props) => {
                                     <h3>Total Time: {value.totalTime}</h3>
                                 </Col>
 
-                                <Col>
+                                <Col className='col-lg-3 d-flex justify-content-end'>
+                                    {value.status !== 'submitted' && <h3><Badge className='display-4' pill bg='warning'>Pending</Badge></h3>}
+                                    {value.status === 'submitted' && <h3><Badge className='display-4' pill bg='success'>Submitted</Badge></h3>}
+                                </Col>
+                                
+
+                                <Col className='col-12 mt-5'>
                                     <Row>
-                                        <Col className='col-6 d-flex justify-content-end'>
-                                            {!value.submitted && <Button variant='success' onClick={() => submitLog(value)}>Submit</Button>}
+                                        <Col className='col-lg-10 d-flex justify-content-end'>
+                                            {value.status !== 'submitted' && <Button variant='success' onClick={() => submitLog(value)}>Submit</Button>}
                                         </Col>
-                                        <Col className='col-6 d-flex justify-content-end'>
-                                            {!value.submitted && <Button onClick={() => handleSelectedLog(value)}>{value.isShowing ? `Hide Details` : `Show Details`}</Button> }
-                                            {value.submitted && <h3><Badge className='display-4' pill bg='success'>Submitted</Badge></h3>}
+                                        <Col className='col-lg-2 d-flex justify-content-end'>
+                                            {value.status !== 'submitted' && <Button onClick={() => handleSelectedLog(value)}>{value.isShowing ? `Hide Details` : `Show Details`}</Button> }
                                         </Col>
                                     </Row>
                                 </Col>
