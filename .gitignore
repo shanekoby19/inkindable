@@ -7,3 +7,4 @@ yarn.lock
 public/bundle.js
 public/bundle.js.map
 public/bundle.js.LICENSE
+.env

@@ -61,7 +61,7 @@ const SignUpForm = (props) => {
                 <Col className='border border-2 rounded p-5'>
                     <Row className='d-flex flex-column align-items-center text-center mb-3'>
                         <Col lg={4} md={6} sm={12} xs={12} className='d-flex flex-column'>
-                            <p><Image src="shineIcon.png" alt="Acelero Shine Icon" roundedCircle fluid /></p>
+                            <p><Image src="img/shineIcon.png" alt="Acelero Shine Icon" roundedCircle fluid /></p>
                         </Col>
                         <Col lg={4} md={6} sm={12} xs={12} className='d-flex flex-column'>
                             <h3>Create Account</h3>
