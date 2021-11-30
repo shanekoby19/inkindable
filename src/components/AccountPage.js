@@ -24,50 +24,50 @@ const AccountPage = (props) => {
     return (
         <div>
             <Nav {...props}></Nav>
-                <Container fluid className='my-5 px-3'>
-                    <Row className='justify-content-between'>
-                        <Col className='col-lg-6'>
-                            <AccountForm {...props}></AccountForm>
-                        </Col>
-                        <Col className='col-lg-6'>
-                            { 
-                              showAddChildAlert ? 
-                              <AddChildAlert 
+            <Container fluid className='my-5 px-3'>
+                <Row className='justify-content-between'>
+                    <Col lg={6} xs={12}>
+                        <AccountForm {...props}></AccountForm>
+                    </Col>
+                    <Col lg={6} xs={12}>
+                        { 
+                            showAddChildAlert ? 
+                            <AddChildAlert 
+                            {...props}
+                            setShowAddChildForm={setShowAddChildForm}
+                            setShowAddChildAlert={setShowAddChildAlert}    
+                            ></AddChildAlert> : null
+                        }
+                        {
+                            showAddChildForm ? 
+                            <AddChildForm
                                 {...props}
-                                setShowAddChildForm={setShowAddChildForm}
-                                setShowAddChildAlert={setShowAddChildAlert}    
-                              ></AddChildAlert> : null
-                            }
-                            {
-                                showAddChildForm ? 
-                                <AddChildForm
-                                    {...props}
-                                    setShowEditChildList={setShowEditChildList}
-                                    setShowAddChildAlert={setShowAddChildAlert}
-                                    setShowAddChildForm={setShowAddChildForm}
-                                ></AddChildForm> : null
-                            }
-                            { 
-                              showEditChildList ?
-                              <EditChildList 
                                 setShowEditChildList={setShowEditChildList}
-                                setShowEditChildForm={setShowEditChildForm}
+                                setShowAddChildAlert={setShowAddChildAlert}
                                 setShowAddChildForm={setShowAddChildForm}
-                                setDefaultEditFormState={setDefaultEditFormState}
-                              ></EditChildList> : null
-                            }
-                            {
-                                showEditChildForm ?
-                                <EditChildForm 
-                                    {...props}
-                                    childData={defaultEditFormState}
-                                    setShowEditChildForm={setShowEditChildForm}
-                                    setShowEditChildList={setShowEditChildList}
-                                ></EditChildForm> : null
-                            }
-                        </Col>
-                    </Row>
-                </Container>
+                            ></AddChildForm> : null
+                        }
+                        { 
+                            showEditChildList ?
+                            <EditChildList 
+                            setShowEditChildList={setShowEditChildList}
+                            setShowEditChildForm={setShowEditChildForm}
+                            setShowAddChildForm={setShowAddChildForm}
+                            setDefaultEditFormState={setDefaultEditFormState}
+                            ></EditChildList> : null
+                        }
+                        {
+                            showEditChildForm ?
+                            <EditChildForm 
+                                {...props}
+                                childData={defaultEditFormState}
+                                setShowEditChildForm={setShowEditChildForm}
+                                setShowEditChildList={setShowEditChildList}
+                            ></EditChildForm> : null
+                        }
+                    </Col>
+                </Row>
+            </Container>
         </div>  
     )
 }

@@ -12,14 +12,13 @@ const LogList = (props) => {
     const [logData, setLogData] = useState([]);
     const [displayLogData, setDisplayLogData] = useState([]);
     const [displayChildData, setDisplayChildData] = useState([]);
-    const [selectedChild, setSelectedChild] = useState(``);
     const [reload, setReload] = useState(``);
 
     useEffect(async () => {
         const tempChildData = [{fName: ``, lName: ``}];
         const q = query(collection(db, `parents/${props.currentParent.refId}/children`));
         const children = await getDocs(q);
-
+        
         children.forEach(child => tempChildData.push({
             refId: child.id,
             ...child.data(),
@@ -29,17 +28,18 @@ const LogList = (props) => {
         setDisplayChildData(tempChildData);
 
         const tempLogs = [];
-        tempChildData.forEach(async (child) => {
-            const logs = await getDocs(collection(db, `parents/${props.currentParent.refId}/children/${child.refId}/logs`));
-            logs.forEach(log => tempLogs.push({
-                ...log.data(),
-                childRefId: child.refId,
-                logRefId: log.id,
-            }));
-        });
+        for (const child of tempChildData) {
+            if(child.fName) {
+                const logs = await getDocs(collection(db, `parents/${props.currentParent.refId}/children/${child.refId}/logs`));
+                logs.forEach(log => tempLogs.push({
+                    ...log.data(),
+                    childRefId: child.refId,
+                    logRefId: log.id,
+                }));
+            }
+        };
         setLogData(tempLogs);
         setDisplayLogData(tempLogs);
-
     }, []);
 
     const handleAddLog = () => {
@@ -61,13 +61,13 @@ const LogList = (props) => {
                     logData={logData}
                     setDisplayLogData={setDisplayLogData}>
                 </LogFilters>
-                <LogListHeader 
+                <LogListHeader
                     {...props} 
                     logData={displayLogData}>
                 </LogListHeader>
                 <Row>
                     <Col>
-                        <ButtonGroup className='d-flex'>
+                        <ButtonGroup className='d-flex mb-5'>
                             <Button 
                                 className='p-3' 
                                 variant='success'

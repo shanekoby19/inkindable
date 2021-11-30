@@ -32,7 +32,7 @@ const LogListHeader = (props) => {
         const logDayDoc = await getDoc(logDayDocRef);
         await updateDoc(logDayDocRef, {
             ...logDayDoc.data(),
-            status: 'submitted',
+            status: 'Submitted',
         })
 
         props.history.push('/');
@@ -48,32 +48,36 @@ const LogListHeader = (props) => {
 
                     return (
                         <div key={index}>
-                            <Row className='mb-3 d-flex border-bottom pb-3'>
-                                <Col className='col-lg-3 d-flex justify-content-start'>
-                                    <h3>{value.logDays[0].type}</h3>
+                            <Row className='mb-3 border-bottom pb-3'>
+                                <Col lg={4} xs={6} className='mb-3'>
+                                    <h3 className='text-lg-start text-md-start text-sm-start'>{value.logDays[0].type}</h3>
                                 </Col>
 
-                                <Col className='col-lg-3 d-flex justify-content-evenly'>
-                                    <h3>{moment(value.logDays[0].date).format('MMM Do YYYY')}</h3>
+                                <Col lg={4} xs={6} className='mb-3'>
+                                    <h3 className='text-lg-center text-md-center text-sm-start'>Total Time: {value.totalTime}</h3>
                                 </Col>
 
-                                <Col className='col-lg-3 d-flex justify-content-evenly'>
-                                    <h3>Total Time: {value.totalTime}</h3>
-                                </Col>
-
-                                <Col className='col-lg-3 d-flex justify-content-end'>
-                                    {value.status !== 'submitted' && <h3><Badge className='display-4' pill bg='warning'>Pending</Badge></h3>}
-                                    {value.status === 'submitted' && <h3><Badge className='display-4' pill bg='success'>Submitted</Badge></h3>}
+                                <Col lg={4} xs={6} className='mb-3'>
+                                    {value.status !== 'Submitted' && <h3 className='text-lg-end text-md-end text-sm-end'><Badge className='display-4' pill bg='warning'>Pending</Badge></h3>}
+                                    {value.status === 'Submitted' && <h3 className='text-lg-end text-md-end text-sm-end'><Badge className='display-4' pill bg='success'>Submitted</Badge></h3>}
                                 </Col>
                                 
 
-                                <Col className='col-12 mt-5'>
+                                <Col xs={12} className='mt-2'>
                                     <Row>
-                                        <Col className='col-lg-10 d-flex justify-content-end'>
-                                            {value.status !== 'submitted' && <Button variant='success' onClick={() => submitLog(value)}>Submit</Button>}
-                                        </Col>
-                                        <Col className='col-lg-2 d-flex justify-content-end'>
-                                            {value.status !== 'submitted' && <Button onClick={() => handleSelectedLog(value)}>{value.isShowing ? `Hide Details` : `Show Details`}</Button> }
+                                        <Col className='d-flex justify-content-end'>
+                                            {
+                                                value.status !== 'Submitted' && 
+                                                <Button 
+                                                    variant='success' 
+                                                    onClick={() => submitLog(value)}
+                                                >Submit</Button>}
+                                            {
+                                                value.status !== 'Submitted' && 
+                                                <Button
+                                                    style={{marginLeft: `1rem`}}
+                                                    onClick={() => handleSelectedLog(value)}
+                                                >{value.isShowing ? `Hide Details` : `Show Details`}</Button> }
                                         </Col>
                                     </Row>
                                 </Col>

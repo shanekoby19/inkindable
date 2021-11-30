@@ -44,11 +44,10 @@ const EditChildList = (props) => {
     }
 
     return (
-        <Container>
+        <Container className='my-lg-0 my-md-5 my-sm-5 my-xs-5'>
             <Row className='border-bottom border-3 mb-5'>
                 <h2 className='text-center display-4'>{props.currentParent.children.length <= 1 ? `Edit Child` : `Edit Children`}</h2>
             </Row>
-
             { 
                 children.map((child, index) => {
                     return (

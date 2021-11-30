@@ -16,6 +16,7 @@ const AddLogForm = (props) => {
     const [selectedChild, setSelectedChild] = useState(``);
     const [selectedLogType, setSelectedLogType] = useState(``);
     const [logTypes, setLogTypes] = useState([]);
+    const [activities, setActivites] = useState([]);
 
     useEffect(async () => {
         const data = [{fName: ``, lName: ``}];
@@ -28,6 +29,13 @@ const AddLogForm = (props) => {
         setLogTypes([``, `Peer Cards`, `Reading At Home`, `Volunteer Hours`].sort());
         setChildData(data);
         childData.sort((first, second) => first.fName > second.fName);
+
+        const activities = await getDocs(collection(db, `peer_activities`));
+        const tempActivities = [];
+        activities.forEach(activity => {
+            tempActivities.push(activity.data().activity);
+        });
+        setActivites(tempActivities);
     }, []);
 
     const handleAddLog = async () => {
@@ -58,9 +66,21 @@ const AddLogForm = (props) => {
             title: ``,
         }));
 
+        if(selectedLogType === `Peer Cards`) {
+            for (const day of dataLoad) {
+                const activity = activities.filter(activity => activity.date === day.date);
+                if(activity.length > 0) {
+                    dataLoad[dataLoad.indexOf(day)] = {
+                        ...dataLoad[dataLoad.indexOf(day)],
+                        ...activity[0],
+                    };
+                }
+            }
+        }
+
         await addDoc(logsCollection, {
             createdAt: moment().valueOf(),
-            status: 'pending',
+            status: 'Pending',
             logDays: dataLoad,
             totalTime: 0,
             type: selectedLogType,

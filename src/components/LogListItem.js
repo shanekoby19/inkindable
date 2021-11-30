@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Button, Row, Container, Col } from 'react-bootstrap';
+import { Button, Row, Container, Col, Badge, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -8,6 +8,7 @@ import db from '../firebase/firebase';
 
 const LogListItem = (props) => {
     const [reload, setReload] = useState(false);
+    const [showRecommendation, setShowRecommendation] = useState(false);
     const titleRef = useRef(props.logDay.title || ``);
     const minutesRef = useRef(props.logDay.minutes || 0);
 
@@ -38,7 +39,6 @@ const LogListItem = (props) => {
             props.history.push('/');
             return props.history.push('/logs');
         }
-
         toggleButtonState();
     }
 
@@ -67,23 +67,36 @@ const LogListItem = (props) => {
     return (
 
         <Container>
-            <Row className='d-flex mb-3'>
-                <Col className='col-lg-3 d-flex justify-content-start'>
+            <Row className='mb-3 pb-2 border-bottom border-2'>
+                <Col lg={3} sm={6} xs={12} className='mb-3'>
                     <h3>{props.logDay.type}</h3>
                 </Col>
-                <Col className='col-lg-3 d-flex justify-content-evenly'>
-                    <h3>{moment(props.logDay.date).format('MMM. Do, YYYY')}</h3>
+                <Col lg={3} sm={6} xs={12} className='mb-3'>
+                    <h3 className='text-md-end text-sm-end'>{moment(props.logDay.date).format('MMM. Do, YYYY')}</h3>
                 </Col>
-                <Col className='col-lg-3 d-flex justify-content-evenly'>
-                    <h3>{props.logDay.status}</h3>
+                <Col lg={3} sm={6} xs={12}>
+                    <h3 className='text-lg-end'>
+                        <Badge 
+                            pill 
+                            bg={props.logDay.status === 'Pending' ? 'warning' : 'success'}
+                        >{props.logDay.status}</Badge>
+                    </h3>
                 </Col>
-                <Col className='col-lg-3 d-flex justify-content-end'>
+                <Col lg={3} sm={6} xs={12}>
                     <Row>
-                        <Col className='d-flex justify-content-start'>
-                            { props.logDay.isShowing && <Button variant='danger' onClick={toggleButtonState}>Cancel</Button>}
-                        </Col>
                         <Col className='d-flex justify-content-end'>
-                            <Button variant={props.logDay.isShowing ? 'success' : 'info'} onClick={() => handleEditLogDay(props.logDay)}>{ props.logDay.isShowing ? `Save`: `Edit` }</Button>
+                            { 
+                                props.logDay.isShowing && 
+                                <Button 
+                                    variant='danger' 
+                                    onClick={toggleButtonState}
+                                >Cancel</Button>
+                            }
+                            <Button
+                                style={{marginLeft: '1rem'}}
+                                variant={props.logDay.isShowing ? 'success' : 'info'} 
+                                onClick={() => handleEditLogDay(props.logDay)}
+                            >{ props.logDay.isShowing ? `Save`: `Edit` }</Button>
                         </Col>
                     </Row>
                 </Col>
@@ -91,13 +104,34 @@ const LogListItem = (props) => {
 
             {
                 props.logDay.isShowing &&
-                <div>
-                    <Row className='d-flex'>
-                        <Col className='col-lg-9 d-flex flex-column justify-content-start my-3'>
+                <Container>
+                    {
+                        props.logDay.type === `Peer Cards` && props.logDay.description && 
+                        <Row>
+                            <Col className='mb-2' xs={12}>
+                                <Form.Check
+                                    type='checkbox'
+                                    label='Show Recommendation'
+                                    onClick={(e) => setShowRecommendation(e.target.checked)}
+                                ></Form.Check>
+                            </Col>
+                            <Col xs={12}>
+                                {
+                                    showRecommendation &&
+                                    <ul>
+                                        <li>Activity: {props.logDay.description}</li>
+                                        <li>Time: {props.logDay.recommended_time} minutes</li>
+                                    </ul>
+                                }
+                            </Col>
+                        </Row>
+                    }
+                    <Row>
+                        <Col lg={9} xs={12} className='my-3 d-flex flex-column'>
                             <label className='my-3'>{determineActivityTitle(props.logDay.type)}</label>
                             <input className='text-center p-3 display-6' ref={titleRef} defaultValue={props.logDay.title}></input>
                         </Col>
-                        <Col className='col-lg-3 d-flex flex-column justify-content-start mt-3'>
+                        <Col lg={3} xs={12} className='mt-3 d-flex flex-column'>
                             <label className='my-3'>{determineActivityTimeTitle(props.logDay.type)}</label>
                             <input className='text-center p-3 display-6'  ref={minutesRef} defaultValue={props.logDay.minutes}></input>
                         </Col>
@@ -107,7 +141,7 @@ const LogListItem = (props) => {
                             <p className='text-success'>Last Updated On: {moment(props.logDay.lastEditAt).format('MMMM Do')} at  {moment(props.logDay.lastEditAt).format('h:mmA')}</p>
                         </Col>
                     </Row>
-                </div>
+                </Container>
             }
         </Container>
     )

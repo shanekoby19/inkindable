@@ -147,56 +147,56 @@ const EditChildForm = (props) => {
     }
 
     return (
-        <Container>
+        <Container className='my-lg-0 my-md-5 my-sm-5 my-xs-5'>
             <Row className='border-bottom border-3 mb-5'>
                 <h2 className='text-center display-4'>{props.currentParent.children.length <= 1 ? `Edit Child` : `Edit Children`}</h2>
             </Row>
        
-            <Row className='align-items-end mb-3'>
-                <Col className='d-flex flex-column col-md-6'>
+            <Row className='justify-content-center'>
+                <Col lg={10} xs={12} className='d-flex flex-column'>
                     <label className='mb-3' htmlFor='input'>First Name</label>
-                    <input className='p-2 mb-5' id='first-name' type='text' name='first-name' ref={fNameRef} defaultValue={props.childData.fName || ``} ></input>
+                    <input className='p-2 mb-3' id='first-name' type='text' name='first-name' ref={fNameRef} defaultValue={props.childData.fName || ``} ></input>
                 </Col>
-                <Col className='d-flex flex-column col-md-6'>
+                <Col lg={10} xs={12} className='d-flex flex-column'>
                     <label className='mb-3' htmlFor='input'>Last Name</label>
-                    <input className='p-2 mb-5' id='last-name' type='text' name='last-name' ref={lNameRef} defaultValue={props.childData.lName || ``} ></input>
+                    <input className='p-2 mb-3' id='last-name' type='text' name='last-name' ref={lNameRef} defaultValue={props.childData.lName || ``} ></input>
                 </Col>
             </Row>
-            <Row>
-                <Col className='d-flex flex-column'> 
-                    <label className='mb-3' className= 'mb-3' htmlFor='input'>Date of Birth</label>
+            <Row className='justify-content-center'>
+                <Col lg={10} xs={12} className='d-flex flex-column'> 
+                    <label className='mb-3' htmlFor='input'>Date of Birth</label>
                     <DatePicker
                         value={dob}
                         onChange={(newValue) => setDOB(moment(newValue))}
                         renderInput={(params) => <TextField {...params}/>}
-                        className='mb-5'
                     />
                 </Col>
-
-                <Col className='col-md-6'>
-                    <label className='mb-3' htmlFor='input'>Delegate</label>
-                    <Form.Select onChange={handleDelegateChange} id='delegate-select' className='p-2 mb-5'>
+                <Col lg={10} xs={12}>
+                    <label className='my-3' htmlFor='input'>Delegate</label>
+                    <Form.Select onChange={handleDelegateChange} id='delegate-select' className='p-2 mb-3'>
                         { delegateData.map((name, index) => <option key={index} value={name}>{name}</option>) }
                     </Form.Select>
                 </Col>
             </Row>
-            <Row>
-                <Col className='col-md-6'>
+            <Row className='justify-content-center'>
+                <Col lg={10} xs={12}>
                     <label className='mb-3' htmlFor='input'>Center</label>
-                    <Form.Select onChange={handleCenterChange} id='center-select'  className='p-2 mb-5'>
+                    <Form.Select onChange={handleCenterChange} id='center-select'  className='p-2 mb-3'>
                         { centerData.length !== 0 && centerData.map((name, index) => <option key={index} value={name}>{name}</option>) };
                     </Form.Select>
                 </Col>
 
-                <Col className='col-md-6'>
+                <Col lg={10} xs={12} >
                     <label className='mb-3' htmlFor='input'>Classroom</label>
-                    <Form.Select onChange={handleClassroomChange} id='classroom-select' className='p-2 mb-5' defaultValue={props.childData.classroom || ``}>
+                    <Form.Select onChange={handleClassroomChange} id='classroom-select' className='p-2 mb-3' defaultValue={props.childData.classroom || ``}>
                         { classroomData.length !== 0 && classroomData.map((name, index) => <option key={index} value={name}>{name}</option>) };
                     </Form.Select>
                 </Col>
             </Row>
-            <Row className='d-flex flex-column'>
-                { error && <Alert variant='danger'>{ error }</Alert> }
+            <Row className='justify-content-center'>
+                <Col lg={10} xs={12} className='d-flex flex-column'>
+                    { error && <Alert variant='danger'>{ error }</Alert> }
+                </Col>
                 <Modal className='d-flex' show={showModal} onHide={() => setShowModal(false)}>
                     <Modal.Header className='container' closeButton>
                         <Modal.Title>Confirm date of birth</Modal.Title>
@@ -211,16 +211,20 @@ const EditChildForm = (props) => {
                         </Container>
                     </Modal.Footer>
                 </Modal>
-                <Button
-                    variant='success'
-                    onClick={() => saveChild()}
-                    className='p-3 mb-3'
-                >Save Changes</Button>
-                <Button
-                    variant='danger'
-                    onClick={handleCancelEdit}
-                    className='p-3 mb-3'
-                >Cancel Changes</Button>
+                <Col lg={10} xs={12} className='d-flex flex-column'>
+                    <Button
+                        variant='success'
+                        onClick={() => saveChild()}
+                        className='p-3 mb-3'
+                    >Save Changes</Button>
+                </Col>
+                <Col lg={10} xs={12} className='d-flex flex-column'>
+                    <Button
+                        variant='danger'
+                        onClick={handleCancelEdit}
+                        className='p-3 mb-3'
+                    >Cancel Changes</Button>
+                </Col>
             </Row>
         </Container>
     )

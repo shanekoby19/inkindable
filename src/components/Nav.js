@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Nav, NavDropdown, Container} from 'react-bootstrap'
+import { Nav, NavDropdown, Container, Row, Col} from 'react-bootstrap'
 import { AuthContext } from '../context/AuthContext';
 
 export default (props) => {
@@ -23,19 +23,29 @@ export default (props) => {
     }
 
     return ( 
-        <Container style={{width: "40%"}}>
-            <Nav fill variant='tabs' activeKey={activeTab} onSelect={handleSelect} className='m-3 justify-content-center'>
-                <Nav.Item>
-                    <Nav.Link eventKey='/' className='h3'>Dashboard</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link eventKey='/logs' className='h3'>Logs</Nav.Link>
-                </Nav.Item>
-                <NavDropdown active={activeTab === '/account'} title="Account" className='h3'>
-                    <NavDropdown.Item eventKey='/account' className='h6'>Details</NavDropdown.Item>
-                    <NavDropdown.Item eventKey='signOut' className='h6'>Sign Out</NavDropdown.Item>
-                </NavDropdown> 
-            </Nav>
+        <Container>
+                    <Nav fill variant='tabs' activeKey={activeTab} onSelect={handleSelect} className='m-3'>
+                        <Container>
+                            <Row>
+                                <Col lg={4} sm={12}>
+                                    <Nav.Item>
+                                        <Nav.Link eventKey='/' className='h3'>Dashboard</Nav.Link>
+                                    </Nav.Item>
+                                </Col>
+                                <Col lg={4} sm={12}>
+                                    <Nav.Item>
+                                        <Nav.Link eventKey='/logs' className='h3'>Logs</Nav.Link>
+                                    </Nav.Item>
+                                </Col>
+                                <Col lg={4} sm={12}>
+                                    <NavDropdown active={activeTab === '/account'} title="Account" className='h3'>
+                                        <NavDropdown.Item eventKey='/account' className='h6'>Details</NavDropdown.Item>
+                                        <NavDropdown.Item eventKey='signOut' className='h6'>Sign Out</NavDropdown.Item>
+                                    </NavDropdown> 
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Nav>
         </Container>
     );
 }

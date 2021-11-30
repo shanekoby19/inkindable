@@ -116,7 +116,7 @@ const AccountForm = (props) => {
             <Container>
                 <Row className='border-bottom border-3 mb-5'>
                     <h2 className='text-center display-4'>Account Details</h2>
-                    <Col className='col-sm-4 col-lg-6'>
+                    <Col>
                         <Modal show={showModal} onHide={() => setShowModal(false)}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Reauthentication required</Modal.Title>
@@ -137,23 +137,19 @@ const AccountForm = (props) => {
                         </Modal>
                     </Col>
                 </Row>
-                <Row>
-                    <Col className='d-flex flex-column'>
+                <Row className='justify-content-center'>
+                    <Col lg={10} xs={12} className='d-flex flex-column'>
                         <label className='mb-3' htmlFor='input'>First Name</label>
-                        <input className='p-2 mb-5' id='first-name' type='text' name='first-name' ref={fNameRef} defaultValue={props.currentParent.fName}></input>
+                        <input className='p-2 mb-3' id='first-name' type='text' name='first-name' ref={fNameRef} defaultValue={props.currentParent.fName}></input>
                     </Col>
-                    <Col className='d-flex flex-column'>
+                    <Col lg={10} xs={12} className='d-flex flex-column'>
                         <label className='mb-3' htmlFor='input'>Last Name</label>
-                        <input className='p-2 mb-5' id='last-name' type='text' name='last-name' ref={lNameRef} defaultValue={props.currentParent.lName}></input>
+                        <input className='p-2 mb-3' id='last-name' type='text' name='last-name' ref={lNameRef} defaultValue={props.currentParent.lName}></input>
                     </Col>
                 </Row>
-                <Row>
-                    <Col className='d-flex flex-column'>
-                        <label className='mb-3' htmlFor='input'>Email</label>
-                        <input className='p-2 mb-5' id='email' type='email' name='email' ref={emailRef} defaultValue={props.currentParent.email}></input>
-                    </Col>
-                    <Col className='d-flex flex-column'> 
-                        <label className='mb-3' className= 'mb-3' htmlFor='input'>Date of Birth</label>
+                <Row className='justify-content-center'>
+                    <Col lg={10} xs={12} className='d-flex flex-column'> 
+                        <label className='mb-3' htmlFor='input'>Date of Birth</label>
                         <DatePicker
                             value={dob}
                             onChange={(newValue) => setDOB(moment(newValue))}
@@ -161,15 +157,19 @@ const AccountForm = (props) => {
                             sx={ {padding: 2} }
                         />
                     </Col>
-                </Row>
-                <Row className='mb-3'>
-                    <Col className='d-flex flex-column'>
-                        <label className='mb-3' htmlFor='password'>Password</label>
-                        <input className='p-2 mb-5' id='password' type='password' name='password' ref={passwordRef}></input>
+                    <Col lg={10} xs={12} className='d-flex flex-column'>
+                        <label className='my-3' htmlFor='input'>Email</label>
+                        <input className='p-2 mb-3' id='email' type='email' name='email' ref={emailRef} defaultValue={props.currentParent.email}></input>
                     </Col>
-                    <Col className='d-flex flex-column'>
+                </Row>
+                <Row className='mb-3 justify-content-center'>
+                    <Col lg={10} xs={12} className='d-flex flex-column'>
+                        <label className='mb-3' htmlFor='password'>Password</label>
+                        <input className='p-2 mb-3' id='password' type='password' name='password' ref={passwordRef}></input>
+                    </Col>
+                    <Col lg={10} xs={12} className='d-flex flex-column'>
                         <label className='mb-3' htmlFor='password'>Confirm Password</label>
-                        <input className='p-2 mb-5' id='con-password' type='password' name='con-password' ref={confirmPasswordRef}></input>
+                        <input className='p-2 mb-3' id='con-password' type='password' name='con-password' ref={confirmPasswordRef}></input>
                     </Col>
                 </Row>
                 <Row>
@@ -187,21 +187,33 @@ const AccountForm = (props) => {
                     </Alert>
                     }
                 </Row>
-                <Row className='d-flex flex-column'>
-                    { error && <Alert variant='danger'>{ error }</Alert> }
-                    { passwordSuccess && <Alert variant='success'>{ passwordSuccess }</Alert> }
-                    { emailSuccess && <Alert variant='success'>{ emailSuccess }</Alert> }
-                    { accountSuccess && <Alert variant='success'>{ accountSuccess }</Alert> }
-                    <Button
-                        variant='success'
-                        onClick={updateParent}
-                        className='p-3 mb-3'
-                    >Save Changes</Button> 
-                    <Button 
-                        variant='danger' 
-                        onClick={() => setShowAlert(true)}
-                        className='p-3'>
-                    Delete Account</Button>
+                <Row className='justify-content-center'>
+                    <Col lg={10} xs={12}>
+                        { error && <Alert className='text-center' variant='danger'>{ error }</Alert> }
+                    </Col>
+                    <Col lg={10} xs={12}>
+                        { passwordSuccess && <Alert variant='success'>{ passwordSuccess }</Alert> }
+                    </Col>
+                    <Col lg={10} xs={12}>
+                        { emailSuccess && <Alert variant='success'>{ emailSuccess }</Alert> }
+                    </Col>
+                    <Col lg={10} xs={12}>
+                        { accountSuccess && <Alert variant='success'>{ accountSuccess }</Alert> }
+                    </Col>
+                    <Col lg={10} xs={12} className='d-flex flex-column'>
+                        <Button
+                            variant='success'
+                            onClick={updateParent}
+                            className='p-3 mb-3'
+                        >Save Changes</Button>
+                    </Col>
+                    <Col lg={10} xs={12} className='d-flex flex-column'>
+                        <Button 
+                            variant='danger' 
+                            onClick={() => setShowAlert(true)}
+                            className='p-3'>
+                        Delete Account</Button>
+                    </Col>
                 </Row>
             </Container>
         </div>

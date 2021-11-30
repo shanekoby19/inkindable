@@ -4,7 +4,7 @@ import { Row, Col, Alert, Button, Container } from 'react-bootstrap';
 
 const AddChildAlert = (props) => {
     const showAddChildForm = () => {
-        if(props.location.pathname === `/logs`) {
+        if(props.location.pathname === `/logs` || '/') {
             props.history.push(`/account`);
         }
 

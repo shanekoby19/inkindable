@@ -108,70 +108,73 @@ const AddChildForm = (props) => {
             <Row className='border-bottom border-3 mb-5'>
                 <h2 className='text-center display-4'>Add Child</h2>
             </Row>
-                <Row className='align-items-end mb-3'>
-                    <Col className='d-flex flex-column col-md-6'>
-                        <label className='mb-3' htmlFor='input'>First Name</label>
-                        <input className='p-2 mb-5' id='first-name' type='text' name='first-name' ref={fNameRef} ></input>
-                    </Col>
-                    <Col className='d-flex flex-column col-md-6'>
-                        <label className='mb-3' htmlFor='input'>Last Name</label>
-                        <input className='p-2 mb-5' id='last-name' type='text' name='last-name' ref={lNameRef} ></input>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col className='d-flex flex-column'> 
-                        <label className='mb-3' className= 'mb-3' htmlFor='input'>Date of Birth</label>
-                        <DatePicker
-                            value={dob}
-                            onChange={(newValue) => setDOB(moment(newValue))}
-                            renderInput={(params) => <TextField {...params}/>}
-                            className='mb-5'
-                        />
-                    </Col>
+            <Row className='justify-content-center'>
+                <Col lg={10} xs={12} className='d-flex flex-column'>
+                    <label className='mb-3' htmlFor='input'>First Name</label>
+                    <input className='p-2 mb-3' id='first-name' type='text' name='first-name' ref={fNameRef} ></input>
+                </Col>
+                <Col lg={10} xs={12} className='d-flex flex-column'>
+                    <label className='mb-3' htmlFor='input'>Last Name</label>
+                    <input className='p-2 mb-3' id='last-name' type='text' name='last-name' ref={lNameRef} ></input>
+                </Col>
+            </Row>
+            <Row className='justify-content-center'>
+                <Col lg={10} xs={12} className='d-flex flex-column'> 
+                    <label className='mb-3' className= 'mb-3' htmlFor='input'>Date of Birth</label>
+                    <DatePicker
+                        value={dob}
+                        onChange={(newValue) => setDOB(moment(newValue))}
+                        renderInput={(params) => <TextField {...params}/>}
+                    />
+                </Col>
+                <Col lg={10} xs={12}>
+                    <label className='my-3' htmlFor='input'>Delegate</label>
+                    <Form.Select onChange={ handleDelegateChange } className='p-2 mb-3'>
+                        { delegateData.map((name, index) => <option key={index} value={name}>{name}</option>) }
+                    </Form.Select>
+                </Col>
+            </Row>
+            <Row className='justify-content-center'>
+                <Col lg={10} xs={12}>
+                    <label className='mb-3' htmlFor='input'>Center</label>
+                    <Form.Select onChange={handleCenterChange} className='p-2 mb-3'>
+                        { centerData.length !== 0 && centerData.map((name, index) => <option key={index} value={name}>{name}</option>) };
+                    </Form.Select>
+                </Col>
 
-                    <Col className='col-md-6'>
-                        <label className='mb-3' htmlFor='input'>Delegate</label>
-                        <Form.Select onChange={ handleDelegateChange } className='p-2 mb-5'>
-                            { delegateData.map((name, index) => <option key={index} value={name}>{name}</option>) }
-                        </Form.Select>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col className='col-md-6'>
-                        <label className='mb-3' htmlFor='input'>Center</label>
-                        <Form.Select onChange={handleCenterChange} className='p-2 mb-5'>
-                            { centerData.length !== 0 && centerData.map((name, index) => <option key={index} value={name}>{name}</option>) };
-                        </Form.Select>
-                    </Col>
-
-                    <Col className='col-md-6'>
-                        <label className='mb-3' htmlFor='input'>Classroom</label>
-                        <Form.Select onChange={(e) => setSelectedClassroom(e.target.value)}className='p-2 mb-5'>
-                        { classroomData.length !== 0 && classroomData.map((name, index) => <option key={index} value={name}>{name}</option>) };
-                        </Form.Select>
-                    </Col>
-                </Row>
-                <Row className='d-flex flex-column'>
+                <Col lg={10} xs={12}>
+                    <label className='mb-3' htmlFor='input'>Classroom</label>
+                    <Form.Select onChange={(e) => setSelectedClassroom(e.target.value)}className='p-2 mb-3'>
+                    { classroomData.length !== 0 && classroomData.map((name, index) => <option key={index} value={name}>{name}</option>) };
+                    </Form.Select>
+                </Col>
+            </Row>
+            <Row className='justify-content-center'>
+                <Col lg={10} xs={12}>
                     { error && <Alert variant='danger'>{ error }</Alert> }
-                    <Modal className='d-flex' show={showModal} onHide={() => setShowModal(false)}>
-                        <Modal.Header className='container' closeButton>
-                            <Modal.Title>Confirm date of birth</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Alert variant='warning'>You've entered a dob for {fNameRef.current.value} of today ({dob.format('MMMM Do, YYYY')}). Please confirm this is correct before saving.</Alert>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Container className='d-flex justify-content-end p-0'>
-                                <Button style={{marginRight: '1rem'}} variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
-                                <Button variant="primary" onClick={() => { setShowModal(false); saveChild(true) } }>Update</Button>
-                            </Container>
-                        </Modal.Footer>
-                    </Modal>
+                </Col>
+                <Modal className='d-flex' show={showModal} onHide={() => setShowModal(false)}>
+                    <Modal.Header className='container' closeButton>
+                        <Modal.Title>Confirm date of birth</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Alert variant='warning'>You've entered a dob for {fNameRef.current.value} of today ({dob.format('MMMM Do, YYYY')}). Please confirm this is correct before saving.</Alert>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Container className='d-flex justify-content-end p-0'>
+                            <Button style={{marginRight: '1rem'}} variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
+                            <Button variant="primary" onClick={() => { setShowModal(false); saveChild(true) } }>Update</Button>
+                        </Container>
+                    </Modal.Footer>
+                </Modal>
+                <Col lg={10} xs={12} className='d-flex flex-column'>
                     <Button
                         variant='success'
                         onClick={() => saveChild()}
                         className='p-3 mb-3'
                     >Save Changes</Button>
+                </Col>
+                <Col lg={10} xs={12} className='d-flex flex-column'>
                     <Button
                         variant='danger'
                         onClick={() => {
@@ -181,7 +184,8 @@ const AddChildForm = (props) => {
                         }}
                         className='p-3 mb-3'
                     >Cancel</Button>
-                </Row>
+                </Col>
+            </Row>
         </Container>
     )
 }
